@@ -1,0 +1,50 @@
+WHOLEMOLECULES ENTITY0=1-2593 ENTITY1=2594-2605
+FIT_TO_TEMPLATE REFERENCE=heavy_atoms.pdb TYPE=OPTIMAL
+
+# Group definition
+prot_noh: GROUP NDX_FILE=index.ndx NDX_GROUP=Protein-H
+sph: GROUP NDX_FILE=index.ndx NDX_GROUP=sphere
+bnz: GROUP NDX_FILE=index.ndx NDX_GROUP=BNZ_noH
+
+WRAPAROUND ATOMS=bnz AROUND=sph
+
+sph_center: COM ATOMS=sph
+bnz_center: COM ATOMS=bnz
+
+sph_coord: POSITION ATOM=sph_center NOPBC
+bnz_coord: POSITION ATOM=bnz_center NOPBC
+
+abs_x: MATHEVAL ARG=bnz_coord.x,sph_coord.x FUNC=x-y PERIODIC=NO
+abs_y: MATHEVAL ARG=bnz_coord.y,sph_coord.y FUNC=x-y PERIODIC=NO
+abs_z: MATHEVAL ARG=bnz_coord.z,sph_coord.z FUNC=x-y PERIODIC=NO
+
+rho: MATHEVAL ARG=abs_x,abs_y,abs_z FUNC=sqrt(x*x+y*y+z*z) PERIODIC=NO
+theta: MATHEVAL ARG=abs_z,rho FUNC=acos(x/y) PERIODIC=0.,pi
+phi: MATHEVAL ARG=abs_x,abs_y FUNC=atan2(y,x) PERIODIC=-pi,pi
+
+
+# Coordination number
+c: COORDINATION GROUPA=bnz GROUPB=prot_noh R_0=0.45
+
+
+#OPES Explore
+opes: OPES_METAD_EXPLORE ...
+  ARG=rho,theta,phi
+  PACE=500
+  BARRIER=50
+  TEMP=300.0
+...
+
+COMMITTOR ...
+  ARG=rho
+  STRIDE=5000
+  BASIN_LL1=3.0
+  BASIN_UL1=10.0
+... COMMITTOR
+
+
+
+PRINT ARG=opes.* FILE=opes_data.dat STRIDE=500
+PRINT ARG=rho,theta,phi FILE=rtp_coord.dat STRIDE=500
+
+FLUSH STRIDE=500

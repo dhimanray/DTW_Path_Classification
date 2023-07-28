@@ -1,0 +1,68 @@
+;
+;	File 'T99A.top' was generated
+;	By user: capelli (502)
+;	On host: mb-capelli.mobile.usilu.net
+;	At date: Mon Feb 25 15:07:56 2019
+
+;
+;	This is a standalone topology file
+;
+;	Created by:
+;	                    :-) GROMACS - gmx pdb2gmx, 2016.5 (-:
+;	
+;	Executable:   /Users/capelli/opt/gromacs-2016.5/bin/gmx_mpi
+;	Data prefix:  /Users/capelli/opt/gromacs-2016.5
+;	Working dir:  /Users/capelli/progetti/T99A/preparation/T99A
+;	Command line:
+;	  gmx_mpi pdb2gmx -f T99A.pdb -o T99A.gro -p T99A.top -ignh
+;	Force field was read from current directory or a relative path - path added.
+;
+
+; Include forcefield parameters
+#include "./amber99sb-ildn_lipids.ff/forcefield.itp"
+
+[ atomtypes ]
+;name   bond_type     mass     charge   ptype   sigma         epsilon       Amb
+ ca       ca          0.00000  0.00000   A     3.39967e-01   3.59824e-01 ; 1.91  0.0860
+ ha       ha          0.00000  0.00000   A     2.59964e-01   6.27600e-02 ; 1.46  0.0150
+
+
+; Include protein topology
+#include "T99A.itp"
+
+; Include Position restraint file
+#ifdef POSRES
+#include "prot_posre.itp"
+#endif
+
+; Include ligand topology
+#include "BNZ_GMX.itp"
+
+#ifdef LIG_POSRES
+#include "lig_posre.itp"
+#endif
+
+
+; Include water topology
+#include "./amber99sb-ildn_lipids.ff/tip3p.itp"
+
+#ifdef POSRES_WATER
+; Position restraint for each water oxygen
+[ position_restraints ]
+;  i funct       fcx        fcy        fcz
+   1    1       1000       1000       1000
+#endif
+
+; Include topology for ions
+#include "./amber99sb-ildn_lipids.ff/ions.itp"
+
+[ system ]
+; Name
+Protein in water
+
+[ molecules ]
+; Compound        #mols
+Protein_chain_A     1
+BNZ                 1
+SOL         10105
+CL               8
