@@ -37,31 +37,4 @@ for i in range(1,Ntraj+1):
     path = np.array(path)
     np.savetxt("unbinding_transitions_conts_6_12/unbinding_transition_%d"%i,path,fmt='%0.4f')
 
-'''
-    a = []
-    for j in range(len(l)):
-        #start include when rho > cutoff
-        if l[j,11] > cut_off_rho:
-            include = True
-        if l[j,14] < cut_off_cont:
-            include = False
-            break
-
-        if include:
-            a.append(l[j])
-'''
-    #ll = np.flip(l,0)
-    #print(ll[0])
-    #a = []
-    #for j in range(len(ll)):
-    #    if ll[j,11] > cut_off_1:
-    #        if ll[j,11] < max_rho:
-    #            a.append(ll[j])
-    #    else:
-    #        break
-    #a = np.array(a)
-
-    #pp = np.flip(a,0)
-
-    #np.savetxt("unbinding_transitions_conts_6_12/unbinding_transition_%d"%i,path,fmt='%0.4f')
 
