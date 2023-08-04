@@ -3,7 +3,7 @@
 source source_gromacs_cuda.sh
 export OMP_NUM_THREADS=2
 
-for i in {1..100}
+for i in {1..137}
 do
 	cp -r template_barr30 run_$i
 	cd run_$i
