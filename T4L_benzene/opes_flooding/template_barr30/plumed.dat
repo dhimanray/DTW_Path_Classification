@@ -1,4 +1,3 @@
-#LOAD FILE=OPESmetad.cpp
 
 WHOLEMOLECULES ENTITY0=1-2593 ENTITY1=2594-2605
 FIT_TO_TEMPLATE REFERENCE=heavy_atoms.pdb TYPE=OPTIMAL
@@ -24,25 +23,10 @@ rho: MATHEVAL ARG=abs_x,abs_y,abs_z FUNC=sqrt(x*x+y*y+z*z) PERIODIC=NO
 theta: MATHEVAL ARG=abs_z,rho FUNC=acos(x/y) PERIODIC=0.,pi
 phi: MATHEVAL ARG=abs_x,abs_y FUNC=atan2(y,x) PERIODIC=-pi,pi
 
-# Restraining potential of the sphere
-#restr: UPPER_WALLS ARG=rho AT=2.8 KAPPA=10000
 
 # Coordination number
 c: COORDINATION GROUPA=bnz GROUPB=prot_noh R_0=0.45
 
-# Metadynamics
-#METAD ...
-#ARG=rho,theta,phi
-#GRID_MIN=0,0.,-pi
-#GRID_MAX=3.0,pi,pi
-#SIGMA=0.1,pi/16.,pi/8.
-#HEIGHT=1.2
-#PACE=500
-#BIASFACTOR=20
-#TEMP=300.
-#LABEL=metad
-#CALC_RCT
-#... METAD
 
 #OPES Flooding
 target: CUSTOM ARG=rho FUNC=step(x-0.9) PERIODIC=NO
